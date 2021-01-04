@@ -201,9 +201,12 @@
                                 <a href="<?php $this->url('delete/file/' . $file['file_id']); ?>">
                                     <img class="icon-dvd " src="<?php $this->asset('images/delete.png'); ?>"/>
                                 </a>
-                                <a href="<?php $this->url('home/resize/' . $file['file_id']); ?>">
-                                    <img class="icon-dvd " src="<?php $this->asset('images/delete.png'); ?>"/>
-                                </a>
+                                <?php if ($file['content_type'] == 'image/png' or $file['content_type'] == 'image/jpg' or $file['content_type'] == 'image/jpeg') { ?>
+                                    <a href="<?php $this->url('home/resize/' . $file['file_id']); ?>">
+                                        <img class="icon-dvd"
+                                             src="<?php $this->asset('images/resize.png'); ?>"/>
+                                    </a>
+                                <?php } ?>
                             </div>
                         </div>
                     <?php } ?>
