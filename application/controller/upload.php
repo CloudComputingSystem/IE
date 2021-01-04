@@ -11,17 +11,12 @@ use application\model\FileModel;
 
 class upload extends Controller
 {
-//    public function file()
-//    {
-//        return $this->view('uploadFile');
-//    }
-
     public function uploadFile()
     {
         $count = count($_FILES['file']['name']);
         $fileModel = new FileModel();
         for ($i = 0; $i < $count; $i++) {
-            var_dump($_FILES);
+            echo "waiting!";
             $file_name = $_FILES['file']['name'][$i];
             $file_tmp = $_FILES['file']['tmp_name'][$i];
             $file_size = $_FILES['file']['size'][$i];
@@ -51,6 +46,7 @@ class upload extends Controller
             $file = array("name" => $file_name, "contentLength" => $file_size, "contentType" => $file_type, "path" => $file_des, "userID" => $_SESSION['userId']);
             $fileModel->uploadFile($file);
         }
+        echo "successfully uploaded!";
         $this->redirect('home/home');
     }
 

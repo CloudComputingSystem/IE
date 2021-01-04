@@ -28,10 +28,21 @@ class user extends Controller
 
     public function userLogin()
     {
-        if (empty($_POST['email']) || empty($_POST['password']))
+        header('Content-Type: application/json; charset=utf-8');
+        header("Access-Control-Allow-Origin: *");
+        header("Access-Control-Allow-Methods: PUT, GET, POST");
+        if (empty($_POST['email']) || empty($_POST['password'])) {
+            echo json_encode(array("message" => "login failed!"));
             $this->redirectBack();
-
-        else {
+        } else {
+//            if ($_SERVER['REQUEST_METHOD'] === "POST") {
+//                $this->redirect('home/home');
+//                $data = json_decode(file_get_contents("php://input"));
+//                if (!empty($data->jwt)) {
+//                    http_response_code(200);
+//                    echo json_encode(array("status" => 1, "message" => "we got jwt token."));
+//                }
+//            }
             $userModel = new UserModel();
             $user = $userModel->checkUserExists('email', $_POST['email']);
             if ($user != null) {
@@ -39,50 +50,46 @@ class user extends Controller
                     $this->setSession($user);
                     if ($this->auth($user)) {
                         http_response_code(200);
-                        echo json_encode($this->auth($user));
-                        $this->redirect('home/home');
+
+                        echo json_encode(array("status" => 200, "message" => "you login"));
+//                        echo json_encode(array("message" => "successful login!", "jwt" => $jwt, "expireAt" => $exp));
+
+// echo json_encode($this->auth($user));
+ $this->redirect('home/home');
                     }
                 }
             } else {
                 http_response_code(401);
                 echo json_encode(array("message" => "login failed!"));
-                $this->redirectBack();
+// $this->redirectBack();
             }
         }
     }
 
-//    public function userLogin()
-//    {
-//        if (empty($_POST['email']) || empty($_POST['password']))
-//            $this->redirectBack();
-//
-//        else {
-//            $userModel = new UserModel();
-//            $user = $userModel->checkUserExists('email', $_POST['email']);
-//            if ($user != null) {
-//                if (password_verify($_POST['password'], $user['password'])) {
-//                    if ($this->auth()) {
-//                        http_response_code(200);
-//                        echo json_encode($this->auth());
-//                        $this->redirect('home/home');
-//                    }
-//                } else {
-//                    http_response_code(401);
-//                    echo json_encode(array("message" => "login failed!"));
-//                    $this->redirectBack();
-//                }
-//            } else
-//                $this->redirectBack();
-//        }
-//    }
 
+    function jwt_request($token, $post) {
+
+        header('Content-Type: application/json'); // Specify the type of data
+        $ch = curl_init('http://localhost/CloudComputingSystem/user/login'); // Initialise cURL
+        $post = json_encode($post); // Encode the data array into a JSON string
+        $authorization = "Authorization: Bearer ".$token; // Prepare the authorisation token
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json' , $authorization )); // Inject the token into the header
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, 1); // Specify the request method as POST
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $post); // Set the posted fields
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1); // This will follow any redirects
+        $result = curl_exec($ch); // Execute the cURL statement
+        curl_close($ch); // Close the cURL connection
+        return json_decode($result); // Return the received data
+
+    }
     public function auth($user)
     {
         $privateKey = "privateKey";
         $iat = time();
         $exp = $iat + 60 * 60;
         $token = array(
-            "iss" => "http://localhost/CloudComputingSystem/application",
+            "iss" => "http://localhost/CloudComputingSystem/user/login",
             "aud" => "http://localhost/CloudComputingSystemttest/",
             "iat" => $iat,
             "nbf" => $iat + 10,
@@ -93,7 +100,6 @@ class user extends Controller
                 "email" => $user['email']
             ));
         $jwt = JWT::encode($token, $privateKey, 'HS512');
-        echo json_encode(array("message" => "successful login!", "jwt" => $jwt, "expireAt" => $exp));
         return array('token' => $jwt, 'expires' => $exp);
     }
 
@@ -132,13 +138,14 @@ class user extends Controller
         else {
             $user = new UserModel();
             $checkUser = $user->checkUser(['email', 'user_name'], [$_POST['email'], $_POST['username']]);
-
             if ($checkUser == true) {
                 http_response_code(400);
                 $this->redirectBack();
             } else {
                 $_POST['password'] = password_hash($_POST['password'], PASSWORD_DEFAULT);
                 $user->storeUser($_POST);
+                $checkUser = $user->checkUser(['email', 'user_name'], [$_POST['email'], $_POST['username']]);
+                $this->setSession($checkUser);
                 $path = "resource\\" . $_POST['username'] . "_dir";
                 mkdir($path);
                 http_response_code(200);
@@ -147,37 +154,6 @@ class user extends Controller
             }
         }
     }
-
-
-//    public function register()
-//    {
-//        if (empty($_POST['username']) || empty($_POST['email']) || empty($_POST['password']) || empty($_POST['repeatPassword']))
-//            $this->redirectBack();
-//        else if (strlen($_POST['password'] < 8))
-//            $this->redirectBack();
-//        else if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL))
-//            $this->redirectBack();
-//        else if ($_POST['password'] != $_POST['repeatPassword'])
-//            $this->redirectBack();
-//        else {
-//            $user = new UserModel();
-//            $checkUser = $user->checkUser(['email', 'user_name'], [$_POST['email'], $_POST['username']]);
-//
-//            if ($checkUser == true)
-//                $this->redirectBack();
-//            else {
-//                $_POST['password'] = password_hash($_POST['password'], PASSWORD_DEFAULT);
-//
-//                $data = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcefghijklmnopqrstuvwxyz';
-//                $token = substr(str_shuffle($data), 0, 8);
-//
-//                $user->storeUser($_POST, $token);
-//                $_SESSION['email'] = $_POST['email'];
-//                $path = "resource" . DIRECTORY_SEPARATOR . $_POST['username'] . "_dir";
-//                mkdir($path);
-//            }
-//        }
-//    }
 
     public function volume($userId)
     {
@@ -193,22 +169,5 @@ class user extends Controller
         if ($remindedVolume < 1)
             $remindedVolume = 1;
         return $remindedVolume;
-    }
-
-
-    public
-    function logout()
-    {
-        if (isset($_SESSION['userId'])) {
-            setcookie($_SESSION['userName'], '', time() - 3600);
-            unset($_SESSION['userId']);
-            unset($_SESSION['email']);
-            unset($_SESSION['userName']);
-            unset($_SESSION['loggedIn']);
-            unset($_SESSION['message']);
-
-            session_destroy();
-        }
-        $this->redirect('Home/home');
     }
 }

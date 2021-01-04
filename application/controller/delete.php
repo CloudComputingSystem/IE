@@ -15,6 +15,8 @@ class delete extends Controller
     {
         $fileModel = new FileModel();
         $result = $fileModel->delete('files', $id[2]);
-        $this->redirect('user/login');
+        $response = array("id" => $result['file_id'], "message" => "Record deleted successfully!");
+        echo $response;
+        $this->redirectBack();
     }
 }

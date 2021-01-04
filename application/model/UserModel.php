@@ -19,25 +19,19 @@ class UserModel extends Model
     {
         $db = new Model();
         $result = $db->select("SELECT `id`,`user_name`,`email`,`password` FROM `users` WHERE (" . $field . " = ?); ", [$value])->fetch();
-        echo "hello";
-        var_dump($result);
         return $result;
     }
 
     public function checkUser($field, $value)
     {
         $db = new Model();
-        $result = $db->select("SELECT * FROM `users` WHERE (" . $field[0] . " = ? and $field[1]=? ); ", $value)->fetch();
+        $result = $db->select("SELECT * FROM `users` WHERE (" . $field[0] . " = ? or $field[1]=? ); ", $value)->fetch();
         return $result;
     }
 
     // store user in DB
     public function storeUser($request)
     {
-        echo "_____________________---------";
-        var_dump($request);
-        echo "_____________________---------";
-
         $db = new Model();
         $db->insert('users', ['user_name', 'email', 'password'], [$_POST['username'], $_POST['email'], $_POST['password']]);
         return true;

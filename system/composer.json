@@ -1,6 +1,8 @@
 {
-    "require": {
-        "firebase/php-jwt": "^5.2",
-      "ext-mongodb": "*"
-    }
+  "require": {
+    "firebase/php-jwt": "^5.2",
+    "ext-mongodb": "*",
+    "ext-gd": "*",
+    "ext-curl": "*"
+  }
 }

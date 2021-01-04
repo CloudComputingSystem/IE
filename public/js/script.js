@@ -2,7 +2,7 @@
 // Library
 //
 
-var Dial = function(container) {
+var Dial = function (container) {
     this.container = container;
     this.size = this.container.dataset.size;
     this.strokeWidth = this.size / 8;
@@ -18,7 +18,7 @@ var Dial = function(container) {
     this.create();
 }
 
-Dial.prototype.create = function() {
+Dial.prototype.create = function () {
     this.createSvg();
     this.createDefs();
     this.createSlice();
@@ -28,14 +28,14 @@ Dial.prototype.create = function() {
     this.container.appendChild(this.svg);
 };
 
-Dial.prototype.createSvg = function() {
+Dial.prototype.createSvg = function () {
     var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svg.setAttribute('width', this.size + 'px');
     svg.setAttribute('height', this.size + 'px');
     this.svg = svg;
 };
 
-Dial.prototype.createDefs = function() {
+Dial.prototype.createDefs = function () {
     var defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
     var linearGradient = document.createElementNS("http://www.w3.org/2000/svg", "linearGradient");
     linearGradient.setAttribute('id', 'gradient');
@@ -63,7 +63,7 @@ Dial.prototype.createDefs = function() {
     this.defs = defs;
 };
 
-Dial.prototype.createSlice = function() {
+Dial.prototype.createSlice = function () {
     var slice = document.createElementNS("http://www.w3.org/2000/svg", "path");
     slice.setAttribute('fill', 'none');
     slice.setAttribute('stroke', 'url(#gradient)');
@@ -74,7 +74,7 @@ Dial.prototype.createSlice = function() {
     this.slice = slice;
 };
 
-Dial.prototype.createOverlay = function() {
+Dial.prototype.createOverlay = function () {
     var r = this.size - (this.size / 2) - this.strokeWidth / 2;
     var circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
     circle.setAttribute('cx', this.size / 2);
@@ -85,7 +85,7 @@ Dial.prototype.createOverlay = function() {
     this.overlay = circle;
 };
 
-Dial.prototype.createText = function() {
+Dial.prototype.createText = function () {
     var fontSize = this.size / 3.5;
     var text = document.createElementNS("http://www.w3.org/2000/svg", "text");
     text.setAttribute('x', (this.size / 2) + fontSize / 7.5);
@@ -100,7 +100,7 @@ Dial.prototype.createText = function() {
     this.text = text;
 };
 
-Dial.prototype.createArrow = function() {
+Dial.prototype.createArrow = function () {
     var arrowSize = this.size / 10;
     var arrowYOffset, m;
     if (this.direction === 'up') {
@@ -122,10 +122,10 @@ Dial.prototype.createArrow = function() {
     this.arrow = arrow;
 };
 
-Dial.prototype.animateStart = function() {
+Dial.prototype.animateStart = function () {
     var v = 0;
     var self = this;
-    var intervalOne = setInterval(function() {
+    var intervalOne = setInterval(function () {
         var p = +(v / self.value).toFixed(2);
         var a = (p < 0.95) ? 2 - (2 * p) : 0.05;
         v += a;
@@ -138,11 +138,11 @@ Dial.prototype.animateStart = function() {
     }, 10);
 };
 
-Dial.prototype.animateReset = function() {
+Dial.prototype.animateReset = function () {
     this.setValue(0);
 };
 
-Dial.prototype.polarToCartesian = function(centerX, centerY, radius, angleInDegrees) {
+Dial.prototype.polarToCartesian = function (centerX, centerY, radius, angleInDegrees) {
     var angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
     return {
         x: centerX + (radius * Math.cos(angleInRadians)),
@@ -150,7 +150,7 @@ Dial.prototype.polarToCartesian = function(centerX, centerY, radius, angleInDegr
     };
 }
 
-Dial.prototype.describeArc = function(x, y, radius, startAngle, endAngle) {
+Dial.prototype.describeArc = function (x, y, radius, startAngle, endAngle) {
     var start = this.polarToCartesian(x, y, radius, endAngle);
     var end = this.polarToCartesian(x, y, radius, startAngle);
     var largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
@@ -161,7 +161,7 @@ Dial.prototype.describeArc = function(x, y, radius, startAngle, endAngle) {
     return d;
 }
 
-Dial.prototype.setValue = function(value) {
+Dial.prototype.setValue = function (value) {
     var c = (value / 100) * 360;
     if (c === 360)
         c = 359.99;
@@ -293,7 +293,7 @@ function ekUpload() {
                 xhr.upload.addEventListener('progress', updateFileProgress, false);
 
                 // File received / failed
-                xhr.onreadystatechange = function(e) {
+                xhr.onreadystatechange = function (e) {
                     if (xhr.readyState == 4) {
                         // Everything is good!
 
@@ -321,4 +321,42 @@ function ekUpload() {
         document.getElementById('file-drag').style.display = 'none';
     }
 }
+
 ekUpload();
+// ==================================================================================search
+$(document).on('ready', function () {
+
+    $('.field').on('focus', function () {
+        $('body').addClass('is-focus');
+    });
+
+    $('.field').on('blur', function () {
+        $('body').removeClass('is-focus is-type');
+    });
+
+    $('.field').on('keydown', function (event) {
+        $('body').addClass('is-type');
+        if ((event.which === 8) && $(this).val() === '') {
+            $('body').removeClass('is-type');
+        }
+    });
+
+});
+
+const url = document.getElementById('url')
+const width = document.getElementById('width')
+const height = document.getElementById('height')
+
+url.addEventListener('input', calculate)
+width.addEventListener('input', calculate)
+height.addEventListener('input', calculate)
+
+function calculate(e) {
+    const id = url.value.split('/').pop()
+    const src = `https://source.unsplash.com/${id}/${width.value}x${height.value}`
+    document.querySelector('a').textContent = src
+    document.querySelector('a').setAttribute('href', src)
+    document.querySelector('img').setAttribute('src', src)
+}
+
+calculate();

@@ -114,7 +114,7 @@
                 reader.onloadend = function () {
                     var base64data = reader.result;
                     $.ajax({
-                        url: '<?php $this->url('upload1/upload'); ?>',
+                        url: '<?php $this->url('uploadProfile/upload'); ?>',
                         method: 'POST',
                         data: {image: base64data},
                         success: function (data) {

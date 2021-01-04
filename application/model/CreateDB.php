@@ -19,15 +19,15 @@ class CreateDB extends Model
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci;",
 
         "CREATE TABLE `files` (
-          `file_id` int NOT NULL ,
-          `title` varchar(200) COLLATE utf8_persian_ci,
-          `content_length` int,
-          `content_type` varchar(50),
+          `file_id` int NOT NULL AUTO_INCREMENT,
+          `name` varchar(200) COLLATE utf8_persian_ci,
+          `content_length` bigint,
+          `content_type` varchar(100),
           `path` varchar(100),
           `user_id` int NOT NULL,
           `created_at` datetime NOT NULL,
           `updated_at` datetime DEFAULT NULL,
-          PRIMARY KEY (`file_id`),
+          PRIMARY KEY (`file_id`,`name`,`user_id`),
           FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci;",
 

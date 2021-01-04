@@ -16,8 +16,8 @@ class Model
             $options = array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8");
             try {
                 $this->connection = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USERNAME, DB_PASSWORD, $options);
-            } catch (PDOException $e) {
-                echo "There is a problem in connection:" . $e->getMessage();
+            } catch (PDOException $exception) {
+                echo '{"error" : {"text" : ' . $exception->getMessage() . '}';
             }
         }
     }
@@ -32,8 +32,8 @@ class Model
                 $stmt->execute($values);
                 return $stmt;
             }
-        } catch (PDOException $e) {
-            echo "There is some problem in connection:" . $e->getMessage();
+        } catch (PDOException $exception) {
+            echo '{"error" : {"text" : ' . $exception->getMessage() . '}';
         }
     }
 
@@ -47,8 +47,8 @@ class Model
                 $stmt->execute($values);
             }
             return true;
-        } catch (PDOException $e) {
-            echo "There is some problem in connection:" . $e->getMessage();
+        } catch (PDOException $exception) {
+            echo '{"error" : {"text" : ' . $exception->getMessage() . '}';
             return false;
         }
     }
@@ -63,19 +63,22 @@ class Model
                 $stmt->execute($values);
                 return $stmt;
             }
-        } catch (PDOException $e) {
-            echo "<div style='color:red;'> There is some problem in connection :</div>" . $e->getMessage();
+        } catch (PDOException $exception) {
+//            echo "<div style='color:red;'> There is some problem in connection :</div>" . $e->getMessage();
+            echo '{"error" : {"text" : ' . $exception->getMessage() . '}';
             return false;
         }
     }
+
     public function insert($tableName, $fields, $values)
     {
         try {
             $stmt = $this->connection->prepare("INSERT INTO " . $tableName . "(" . implode(', ', $fields) . " , created_at) VALUES ( :" . implode(', :', $fields) . " , now() );");
             $stmt->execute(array_combine($fields, $values));
             return true;
-        } catch (PDOException $e) {
-            echo "<div style='color:red;'> There is some problem in connection :</div>" . $e->getMessage();
+        } catch (PDOException $exception) {
+//            echo "<div style='color:red;'> There is some problem in connection :</div>" . $e->getMessage();
+            echo '{"error" : {"text" : ' . $exception->getMessage() . '}';
             return false;
         }
     }
@@ -87,7 +90,8 @@ class Model
             echo "<div style='color:purple;'> Your connection is successful. </div>";
             return true;
         } catch (ConnectionException $exception) {
-            echo "<div style='color:red;'> There is some problem in connection : </div>" . $exception->getMessage();
+//            echo "<div style='color:red;'> There is some problem in connection : </div>" . $exception->getMessage();
+            echo '{"error" : {"text" : ' . $exception->getMessage() . '}';
             return false;
         }
     }
@@ -102,24 +106,21 @@ class Model
                 $sql .= " `" . $field . "` = NULL,";
         }
         $sql .= " `updated_at`=now()";
-        $sql .= "WHERE `id` = ?";
+        $sql .= "WHERE `file_id` = ?";
         try {
             $stmt = $this->connection->prepare($sql);
             $affectedRows = $stmt->execute(array_merge(array_filter(array_values($values)), [$id]));
             if (isset($affectedRows))
                 return true;
         } catch (ConnectionException $exception) {
-            echo "<div style='color:red;'> There is some problem in connection : </div>" . $exception->getMessage();
+//            echo "<div style='color:red;'> There is some problem in connection : </div>" . $exception->getMessage();
+            echo '{"error" : {"text" : ' . $exception->getMessage() . '}';
             return false;
         }
     }
 
     public function delete($tableName, $id)
     {
-        echo "delte";
-
-        var_dump($id);
-        echo "delte";
         $sql = "DELETE FROM `" . $tableName . "` WHERE `file_id` = ? ;";
         try {
             $stmt = $this->connection->prepare($sql);
@@ -128,10 +129,10 @@ class Model
                 echo "Record is deleted!";
             return true;
         } catch (ConnectionException $exception) {
-            echo "<div style='color:red;'> There is some problem in connection : </div>" . $exception->getMessage();
+//            echo "<div style='color:red;'> There is some problem in connection : </div>" . $exception->getMessage();
+            echo '{"error" : {"text" : ' . $exception->getMessage() . '}';
             return false;
         }
-
     }
 
     public function numberOfRows($tableName)
