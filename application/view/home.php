@@ -28,8 +28,6 @@
 </head>
 
 <body>
-
-<!-- MENU -->
 <nav class="navbar navbar-expand-sm navbar-light">
     <div class="container">
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -90,7 +88,6 @@
                                                 else $this->asset('userProfile/' . $_SESSION['userName'] . '.png'); ?>"
                                                      id="uploaded_image"
                                                      class="img-responsive img-circle"/>
-                                                <!--                        <img src="upload/user.png" id="uploaded_image" class="img-responsive img-circle" />-->
                                                 <div class="overlay">
                                                     <div class="text">Click to Change Profile Image</div>
                                                 </div>
@@ -134,8 +131,6 @@
                                 </div>
                             </div>
                         </div>
-                        <!--                        <img class="round" src="-->
-                        <?php //$this->asset('images/e.png'); ?><!--" alt="user"/>-->
                         <h4><?php echo $_SESSION['userName']; ?></h4>
                         <p><?php echo $_SESSION['email']; ?></p>
                         <hr class="line">
@@ -185,28 +180,38 @@
                                             $this->asset('images\Word-icon.png'); ?>"
                                         width="40">
                                 <div class="ml-2"><span
-                                            class="font-weight-bold d-block"><?php echo $file['name']; ?></span></div>
+                                            class="font-weight-bold d-block text-abstract"><?php echo $file['name']; ?></span>
+                                </div>
                             </div>
                             <div class="d-flex flex-row align-items-center">
                                 <span class="d-block ml-5 font-weight-bold"><?php if ($file['content_length'] == 0) echo "60 B"; else if ($file['content_length'] < 1024) echo intval($file['content_length']) . " KB";
                                     else if ($file['content_length'] < 1024 * 1024) echo intval($file['content_length'] / 1024) . " MB";
                                     else echo intval($file['content_length'] / (1024 * 1024)) . " GB"; ?>
                                 </span>
-                                <a href="<?php $this->url('home/viewFile/' . $file['file_id']); ?>">
-                                    <img class="icon-dvd icon-view" src="<?php $this->asset('images/view.png'); ?>"/>
-                                </a>
+                                <?php if ($file['content_type'] == 'image/png' or $file['content_type'] == 'image/jpg' or $file['content_type'] == 'image/jpeg') { ?>
+                                    <a href="<?php $this->url('home/resize/' . $file['file_id']); ?>">
+                                        <img class="icon-dvd icon-view1"
+                                             src="<?php $this->asset('images/resize.png'); ?>"/>
+                                    </a>
+                                <?php } else { ?>
+                                    <a class="icon-view"
+                                       href="<?php $this->url('home/viewFile/' . $file['file_id']); ?>">
+                                    </a>
+                                <?php } ?>
+<!--                                --><?php //if ($file['content_type'] == 'image/png' or $file['content_type'] == 'image/jpg' or $file['content_type'] == 'image/jpeg'
+//                                    or $file['content_type'] == 'application/pdf' or $file['content_type']=='text/plain') { ?>
+                                    <a href="<?php $this->url('home/viewFile/' . $file['file_id']); ?>">
+                                        <img class="icon-dvd" src="<?php $this->asset('images/view.png'); ?>"/>
+                                    </a>
                                 <a href="<?php $this->url('download/file/' . $file['file_id']); ?>">
                                     <img class="icon-dvd" src="<?php $this->asset('images/download.png'); ?>"/>
+                                </a>
+                                <a href="<?php $this->url('edit/file/' . $file['file_id']); ?>">
+                                    <img class="icon-dvd" src="<?php $this->asset('images/edit.png'); ?>"/>
                                 </a>
                                 <a href="<?php $this->url('delete/file/' . $file['file_id']); ?>">
                                     <img class="icon-dvd " src="<?php $this->asset('images/delete.png'); ?>"/>
                                 </a>
-                                <?php if ($file['content_type'] == 'image/png' or $file['content_type'] == 'image/jpg' or $file['content_type'] == 'image/jpeg') { ?>
-                                    <a href="<?php $this->url('home/resize/' . $file['file_id']); ?>">
-                                        <img class="icon-dvd"
-                                             src="<?php $this->asset('images/resize.png'); ?>"/>
-                                    </a>
-                                <?php } ?>
                             </div>
                         </div>
                     <?php } ?>
@@ -290,8 +295,7 @@
 
     });
 </script>
-
-
 </body>
-
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>-->
+<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>-->
 </html>

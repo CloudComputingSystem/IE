@@ -8,12 +8,6 @@ use application\model\Model;
 
 class UserModel extends Model
 {
-    private $userId;
-    private $userName;
-    private $email;
-    private $password;
-    private $volume;
-
     // select user from DB to check if user exists or not
     public function checkUserExists($field, $value)
     {
@@ -44,24 +38,4 @@ class UserModel extends Model
         $this->closeConnection();
         return $result;
     }
-
-//    public function updateUser($id, $fields, $values)
-//    {
-//        $db = new Model();
-//        $changed = $db->update('users', $id, $fields, $values);
-//        if ($changed == true)
-//            return true;
-//        else
-//            return false;
-//    }
-//
-//    public function updateUserProfile($id, $user)
-//    {
-//        $db = new Model();
-//        $changed = $db->update('users', $id, ['first_name', 'last_name'], [$user['first_name'], $user['last_name']]);
-//        if ($changed != null)
-//            return true;
-//        else
-//            return false;
-//    }
 }

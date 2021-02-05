@@ -37,22 +37,6 @@ class Model
         }
     }
 
-    protected function execute($query, $values = null)
-    {
-        try {
-            if ($values == null) {
-                $this->connection->exec($query);
-            } else {
-                $stmt = $this->connection->prepare($query);
-                $stmt->execute($values);
-            }
-            return true;
-        } catch (PDOException $exception) {
-            echo '{"error" : {"text" : ' . $exception->getMessage() . '}';
-            return false;
-        }
-    }
-
     public function select($sql, $values = NULL)
     {
         try {
@@ -64,7 +48,6 @@ class Model
                 return $stmt;
             }
         } catch (PDOException $exception) {
-//            echo "<div style='color:red;'> There is some problem in connection :</div>" . $e->getMessage();
             echo '{"error" : {"text" : ' . $exception->getMessage() . '}';
             return false;
         }
@@ -113,8 +96,7 @@ class Model
             if (isset($affectedRows))
                 return true;
         } catch (ConnectionException $exception) {
-//            echo "<div style='color:red;'> There is some problem in connection : </div>" . $exception->getMessage();
-            echo '{"error" : {"text" : ' . $exception->getMessage() . '}';
+            echo "<div style='color:red;'> There is some problem in connection : </div>" . $exception->getMessage();
             return false;
         }
     }
@@ -135,19 +117,10 @@ class Model
         }
     }
 
-    public function numberOfRows($tableName)
-    {
-        $query = "SELECT COUNT(`id`) FROM " . $tableName . "; ";
-        $result = $this->query($query)->fetchAll();
-        $this->closeConnection();
-        return $result;
-    }
-
     public function __destruct()
     {
         $this->closeConnection();
     }
-
 
     protected function closeConnection()
     {

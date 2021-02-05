@@ -3,6 +3,7 @@
     "firebase/php-jwt": "^5.2",
     "ext-mongodb": "*",
     "ext-gd": "*",
-    "ext-curl": "*"
+    "ext-curl": "*",
+    "ext-pdo": "*"
   }
 }

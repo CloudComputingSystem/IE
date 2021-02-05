@@ -2,7 +2,7 @@
 
 
 namespace application\controller;
-session_start();
+//session_start();
 require_once 'application/model/Model.php';
 require_once 'application/model/FileModel.php';
 
@@ -16,7 +16,7 @@ class delete extends Controller
         $fileModel = new FileModel();
         $result = $fileModel->delete('files', $id[2]);
         $response = array("id" => $result['file_id'], "message" => "Record deleted successfully!");
-        echo $response;
+        var_dump($response);
         $this->redirectBack();
     }
 }

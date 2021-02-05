@@ -38,39 +38,7 @@ class Routing
                 call_user_func(array($class, $method), array_slice($this->currentRoute, 2));
             else
                 echo "parameter error!!";
-
         } else
-            echo "method not exists!!";
-    }
-
-//    public function makeCode($url)
-//    {
-//        $url = trim($url);
-//        if (!filter_var($url, FILTER_VALIDATE_URL)) {
-//            return false;
-//        }
-//        $db = new Model();
-//        $selectedUrl = $db->select("SELECT `code` FROM `links` WHERE `url`=? ;", [$url])->fetchAll();
-//        if ($selectedUrl[0] != null)
-//            return $selectedUrl['code'];
-//        else {
-//            $code = $this->generateCode(1);
-//            $db->insert('links', ['url', 'code', 'created_time'], [$url, $code, now()]);
-//            return $code;
-//        }
-//
-//        return $url[0];
-//    }
-//
-//    public function generateCode($num)
-//    {
-//        return base_convert($num, 10, 36);
-//    }
-
-    public function error404()
-    {
-        http_response_code(404);
-        include realpath(dirname(__FILE__) . "/../../application/view/error404.php");
-        exit;
+            echo "404";
     }
 }

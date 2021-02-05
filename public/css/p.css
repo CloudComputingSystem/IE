@@ -55,7 +55,7 @@ label.radio span {
     font-weight: 300
 }
 
-label.radio input:checked+span {
+label.radio input:checked + span {
     border-color: #fff;
     background-color: blue;
     color: #fff
@@ -146,7 +146,7 @@ label.radio input:checked+span {
 }
 
 .rounded-img {
-    border-radius: 25rem!important;
+    border-radius: 25rem !important;
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -169,5 +169,20 @@ label.radio input:checked+span {
 }
 
 .icon-view {
-    margin-left: 50px;
+    margin-left: 58px;
+}
+
+.icon-view1 {
+    margin-left: 25px;
+}
+
+.border {
+    border-color: #fff;
+}
+
+.text-abstract {
+    white-space: nowrap;
+    width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

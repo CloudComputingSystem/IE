@@ -28,15 +28,15 @@
                 <li class="nav-item">
                     <a href="<?php $this->url('home/home'); ?>" class="nav-link"><span data-hover="home">Home</span></a>
                 </li>
-<!--                <li class="nav-item">-->
-<!--                    <a href="#project" class="nav-link"><span data-hover="Projects">Projects</span></a>-->
-<!--                </li>-->
-<!--                <li class="nav-item">-->
-<!--                    <a href="#resume" class="nav-link"><span data-hover="Resume">Resume</span></a>-->
-<!--                </li>-->
-<!--                <li class="nav-item">-->
-<!--                    <a href="#contact" class="nav-link"><span data-hover="Contact">Contact</span></a>-->
-<!--                </li>-->
+                <!--                <li class="nav-item">-->
+                <!--                    <a href="#project" class="nav-link"><span data-hover="Projects">Projects</span></a>-->
+                <!--                </li>-->
+                <!--                <li class="nav-item">-->
+                <!--                    <a href="#resume" class="nav-link"><span data-hover="Resume">Resume</span></a>-->
+                <!--                </li>-->
+                <!--                <li class="nav-item">-->
+                <!--                    <a href="#contact" class="nav-link"><span data-hover="Contact">Contact</span></a>-->
+                <!--                </li>-->
             </ul>
 
             <ul class="navbar-nav ml-lg-auto">
@@ -89,13 +89,10 @@
         </div>
     </div>
 </section>
-
-<!-- FOOTER -->
 <footer class="footer py-5">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 col-12">
-<!--                <p class="copyright-text text-center">Copyright &copy; 2019 Company Name . All rights reserved</p>-->
             </div>
         </div>
     </div>

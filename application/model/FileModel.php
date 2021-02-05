@@ -3,13 +3,6 @@
 
 namespace application\model;
 
-//header("Access-Control-Allow-Origin: *");
-//header("Content-Type: application/json; charset=UTF-8");
-//header("Access-Control-Allow-Methods: POST");
-//header("Access-Control-Max-Age: 3600");
-//header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
-
-
 class FileModel extends Model
 {
     public function findAll($userId)
@@ -43,17 +36,15 @@ class FileModel extends Model
 
     public function delete($tableName, $id)
     {
-        echo "yesss";
         $db = new Model();
         $result = $db->delete('files', $id);
-        var_dump($result);
         return $result;
     }
 
-    public function edit($id, $name)
+    public function edit($id, $name, $path)
     {
         $db = new Model();
-        $result = $db->update('files', $id, ['name'], [$name]);
+        $result = $db->update('files', $id, ['name', 'path'], [$name, $path]);
         return $result;
     }
 }
